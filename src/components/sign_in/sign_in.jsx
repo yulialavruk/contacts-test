@@ -1,96 +1,91 @@
 import React from "react";
 import { Button, Modal, Form, Input } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
+import { Redirect } from "react-router-dom";
+import UserMenu from "./user_menu";
 
-export default class SignIn extends React.Component {
-  state = {
-    loading: false,
-    modalVisible: false,
-  };
-
-  setModalVisible(modalVisible) {
-    this.setState({ modalVisible });
-  }
-
-  handleSubmit = () => {
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, modalVisible: false });
-    }, 3000);
-  };
-
-  handleCancel = () => {
-    this.setState({ modalVisible: false });
-  };
-
-  render() {
-    return (
-      <>
-        <Button type="link" onClick={() => this.setModalVisible(true)}>
+const SignIn = ({
+  loading,
+  show_modal,
+  user,
+  setShowModal,
+  handleSubmit,
+  handleCancel,
+  onLogout,
+}) => {
+  return (
+    <>
+      {user ? (
+        <>
+          <UserMenu user={user} onLogout={onLogout} />
+          <Redirect
+            to={{
+              pathname: "/profile",
+            }}
+          />
+        </>
+      ) : (
+        <Button type="link" onClick={() => setShowModal(true)}>
           <LoginOutlined /> Sign In
         </Button>
-        <Modal
-          title="Sign In"
-          centered
-          visible={this.state.modalVisible}
-          onOk={this.handleSubmit}
-          onCancel={this.handleCancel}
-          footer={[
-            <Button
-              key="submit"
-              htmlType="submit"
-              type="primary"
-              loading={this.state.loading}
-              onClick={this.handleOk}
-            >
-              Submit
-            </Button>,
-            <Button key="back" onClick={this.handleCancel}>
-              Cancel
-            </Button>,
-          ]}
-        >
-          <Form
-            layout="vertical"
-            name="basic"
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={this.onFinish}
-            onFinishFailed={this.onFinishFailed}
+      )}
+      <Modal
+        title="Sign In"
+        centered
+        visible={show_modal}
+        onOk={handleSubmit}
+        onCancel={handleCancel}
+        footer={[
+          <Button
+            key="submit"
+            htmlType="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleSubmit}
           >
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your email!",
-                },
-              ]}
-            >
-              <Input placeholder="Email" />
-            </Form.Item>
+            Submit
+          </Button>,
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+        ]}
+      >
+        <Form
+          layout="vertical"
+          name="basic"
+          initialValues={{
+            remember: true,
+          }}
+          // onFinish={this.onFinish}
+          // onFinishFailed={this.onFinishFailed}
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                required: true,
+                message: "Please input your email!",
+              },
+            ]}
+          >
+            <Input placeholder="Email" />
+          </Form.Item>
 
-            <Form.Item
-              name="password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your password!",
-                },
-              ]}
-            >
-              <Input.Password placeholder="Password" />
-            </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
+};
 
-            {/* <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item> */}
-          </Form>
-        </Modal>
-      </>
-    );
-  }
-}
+export default SignIn;

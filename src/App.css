@@ -37,7 +37,25 @@
   }
 }
 
+.layout {
+  height: 100vh;
+}
+
 .header {
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.user-icon {
+  border-radius: 50%;
+}
+
+.profile__picture {
+  width: 250px;
+  height: 250px;
+}
+
+.profile__title {
+  font-size: 30px;
+  margin: 30px 0;
 }
