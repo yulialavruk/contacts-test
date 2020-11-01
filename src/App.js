@@ -14,23 +14,27 @@ class App extends React.Component {
   state = {
     loading: false,
     show_modal: false,
-    user: false,
+    user: null,
   };
 
   setShowModal = (show_modal) => {
     this.setState({ show_modal });
   };
 
-  handleSubmit = async () => {
-    this.setState({ loading: true });
-    const fetchedData = await fetchData();
-    setTimeout(() => {
-      this.setState({
-        loading: false,
-        show_modal: false,
-        user: fetchedData,
-      });
-    }, 3000);
+  handleSubmit = () => {
+    this.setState({ loading: true }, () => {
+      fetchData({
+        params: {
+          results: 1,
+        },
+      }).then((data) =>
+        this.setState({
+          loading: false,
+          show_modal: false,
+          user: data,
+        })
+      );
+    });
   };
 
   handleCancel = () => {
@@ -38,7 +42,7 @@ class App extends React.Component {
   };
 
   onLogout = () => {
-    this.setState({ user: false });
+    this.setState({ user: null });
   };
 
   render() {

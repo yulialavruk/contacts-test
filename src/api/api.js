@@ -1,13 +1,9 @@
 import axios from "axios";
 
-const url = "https://randomuser.me/api/?results=1";
+const url = "https://randomuser.me/api/";
 
-export const fetchData = async () => {
-  try {
-    const {
-      data: { results },
-    } = await axios.get(url);
-
-    return { ...results };
-  } catch (error) {}
-};
+export const fetchData = (params) =>
+  axios
+    .get(url, params)
+    .then(({ data: { results } }) => results)
+    .catch((error) => {});
