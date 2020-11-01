@@ -15,7 +15,10 @@ class App extends React.Component {
     loading: false,
     show_modal: false,
     user: null,
+    email: "",
   };
+
+  onChange = (e) => this.setState({ email: e.target.value });
 
   setShowModal = (show_modal) => {
     this.setState({ show_modal });
@@ -25,6 +28,7 @@ class App extends React.Component {
     this.setState({ loading: true }, () => {
       fetchData({
         params: {
+          seed: this.state.email,
           results: 1,
         },
       }).then((data) =>
@@ -46,7 +50,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { loading, show_modal, user } = this.state;
+    const { loading, show_modal, user, email } = this.state;
     return (
       <BrowserRouter>
         <div className="App">
@@ -68,6 +72,8 @@ class App extends React.Component {
                     loading={loading}
                     show_modal={show_modal}
                     user={user}
+                    email={email}
+                    onChange={this.onChange}
                     setShowModal={this.setShowModal}
                     handleSubmit={this.handleSubmit}
                     handleCancel={this.handleCancel}

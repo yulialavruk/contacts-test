@@ -1,33 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Modal, Form, Input, Row, Col } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
 import UserMenu from "./user_menu";
+import { validateEmail, validatePassword } from "./validate";
 
 class SignIn extends React.Component {
-  isEmail = (email) => {
-    const REGEXP_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return REGEXP_EMAIL.test(String(email).toLowerCase());
-  };
-
-  validateEmail = (rule, value, callback) => {
-    if (value && !this.isEmail(value)) {
-      callback("The email format is invalid.");
-      return;
-    }
-
-    callback();
-  };
-
-  validatePassword = (rule, value, callback) => {
-    if (value && value.length < 8) {
-      callback("The password format is invalid.");
-      return;
-    }
-
-    callback();
-  };
-
   render() {
     const {
       loading,
@@ -37,6 +15,8 @@ class SignIn extends React.Component {
       handleSubmit,
       handleCancel,
       onLogout,
+      // email,
+      onChange,
     } = this.props;
     return (
       <>
@@ -79,9 +59,10 @@ class SignIn extends React.Component {
                   message: "Please input your email!",
                 },
                 {
-                  validator: this.validateEmail,
+                  validator: validateEmail,
                 },
               ]}
+              onChange={onChange}
             >
               <Input placeholder="Email" type="email" />
             </Form.Item>
@@ -94,7 +75,7 @@ class SignIn extends React.Component {
                   message: "Please input your password!",
                 },
                 {
-                  validator: this.validatePassword,
+                  validator: validatePassword,
                 },
               ]}
             >
