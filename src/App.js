@@ -3,9 +3,9 @@ import logo from "./logo.svg";
 import { Layout, Row, Col } from "antd";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { fetchData } from "./api/api";
-import SignIn from "./components/sign_in/sign_in";
-import Profile from "./components/profile";
-import Contacts from "./components/contacts";
+import SignIn from "./components/header/sign_in/sign_in";
+import Profile from "./components/pages/profile";
+import Contacts from "./components/pages/contacts";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
@@ -60,7 +60,7 @@ class App extends React.Component {
                 <Col span={3}>
                   <img
                     src={`http://inkubator.ks.ua/testing/react/redux/static/media/wezom-logo.324b96ae.svg`}
-                    alt=""
+                    alt="logo"
                   />
                 </Col>
                 <Col span={11} align="start">
