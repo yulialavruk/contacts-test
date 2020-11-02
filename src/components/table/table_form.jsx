@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Row, Col, Select, Input, Checkbox, Button } from "antd";
+import { CloseOutlined } from "@ant-design/icons";
 import { NATIONALITIES } from "../../constants/nationalities";
-// import Filters from "./filters";
 const { Option } = Select;
 const { Search } = Input;
 
@@ -14,6 +14,7 @@ export const TableForm = ({
   onChangeSearch,
   handleChange,
   handleChangeNat,
+  onClear,
 }) => (
   <Form layout="inline">
     <Row>
@@ -31,7 +32,12 @@ export const TableForm = ({
           </Col>
           <Col>
             <Form.Item label="">
-              <Select onChange={handleChange} style={{ width: 120 }} allowClear>
+              <Select
+                onChange={handleChange}
+                style={{ width: 120 }}
+                allowClear
+                placeholder="Gender"
+              >
                 <Option value="male">Male</Option>
                 <Option value="female">Female</Option>
                 <Option value="indeterminate">Indeterminate</Option>
@@ -41,23 +47,28 @@ export const TableForm = ({
           <Col>
             <Form.Item label="">
               <Select
+                placeholder="Nationality"
                 mode="multiple"
                 allowClear
                 style={{ width: 150 }}
-                placeholder="Please select"
                 onChange={handleChangeNat}
               >
                 {children}
               </Select>
             </Form.Item>
           </Col>
-          {/* <Col>
-            <Form.Item label=""></Form.Item>
-          </Col> */}
+          <Col>
+            <Form.Item label="">
+              <Checkbox>I am creator</Checkbox>
+            </Form.Item>
+          </Col>
         </Row>
       </Col>
       <Col>
-        <Button></Button>
+        <Button type="link" onClick={onClear}>
+          <CloseOutlined />
+          Clear
+        </Button>
       </Col>
     </Row>
   </Form>

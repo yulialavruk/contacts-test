@@ -82,7 +82,7 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Header>
-            <Content>
+            <Content className="main">
               <Route exact path="/">
                 <img src={logo} className="App-logo" alt="logo" />
               </Route>

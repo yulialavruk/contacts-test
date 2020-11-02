@@ -2,7 +2,6 @@ import React from "react";
 import { Table, Tag } from "antd";
 import { NATIONALITIES } from "../../constants/nationalities";
 import { TableForm } from "./table_form";
-// import Filters from "./filters";
 
 const columns = [
   {
@@ -75,16 +74,21 @@ const columns = [
 ];
 
 export class TableContent extends React.Component {
-  state = {
+  initialState = {
     search: "",
     gender: "",
     nat: "",
   };
 
+  state = { ...this.initialState };
+
   handleChange = (value) => this.setState({ gender: value ? [value] : [] });
   handleChangeNat = (value) => this.setState({ nat: value });
   onChangeSearch = (e) => this.setState({ search: e ? e.target.value : "" });
 
+  onClear = () => {
+    this.setState({ ...this.initialState });
+  };
   nestedFilter = (targetArray, filters) => {
     var filterKeys = Object.keys(filters);
     return targetArray.filter(function (eachObj) {
@@ -129,6 +133,7 @@ export class TableContent extends React.Component {
             onChangeSearch={this.onChangeSearch}
             handleChange={this.handleChange}
             handleChangeNat={this.handleChangeNat}
+            onClear={this.onClear}
           />
         )}
       />

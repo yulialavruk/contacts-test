@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Modal, Form, Input, Row, Col } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
 import { Redirect } from "react-router-dom";
@@ -15,7 +15,6 @@ class SignIn extends React.Component {
       handleSubmit,
       handleCancel,
       onLogout,
-      // email,
       onChange,
     } = this.props;
     return (
@@ -38,7 +37,6 @@ class SignIn extends React.Component {
           title="Sign In"
           centered
           visible={show_modal}
-          // onOk={handleCancel}
           onCancel={handleCancel}
           footer={null}
         >
@@ -49,7 +47,6 @@ class SignIn extends React.Component {
               remember: true,
             }}
             onFinish={handleSubmit}
-            // onFinishFailed={this.onFinishFailed}
           >
             <Form.Item
               name="email"
