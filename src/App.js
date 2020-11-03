@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import logo_icon from "./assets/logo.png";
-import { Layout, Row, Col } from "antd";
+import { Layout, Row, Col, notification } from "antd";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
@@ -10,6 +10,19 @@ import Contacts from "./components/pages/contacts";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
+
+const openNotification = (type) => {
+  if (type === "success") {
+    notification[type]({
+      message: "Successfully logged out",
+    });
+  } else {
+    notification[type]({
+      message: "Unable to retrieve profile data due to Network Error",
+      description: "Please, try again later",
+    });
+  }
+};
 
 class App extends React.Component {
   state = {
@@ -25,6 +38,21 @@ class App extends React.Component {
     this.setState({ show_modal });
   };
 
+  // componentDidMount() {
+  //   if (localStorage.getItem("seed_key")) {
+  //     fetchData({
+  //       params: {
+  //         seed: localStorage.getItem("seed_key"),
+  //         results: 1,
+  //       },
+  //     }).then((data) => {
+  //       return this.setState({
+  //         user: data,
+  //       });
+  //     });
+  //   }
+  // }
+
   handleSubmit = () => {
     this.setState({ loading: true }, () => {
       fetchData({
@@ -32,14 +60,23 @@ class App extends React.Component {
           seed: this.state.email,
           results: 1,
         },
-      }).then((data) => {
-        localStorage.setItem("seed_key", this.state.email);
-        return this.setState({
-          loading: false,
-          show_modal: false,
-          user: data,
+      })
+        .then((data) => {
+          localStorage.setItem("seed_key", this.state.email);
+          console.log(data);
+          return this.setState({
+            loading: false,
+            show_modal: false,
+            user: data,
+          });
+        })
+        .catch(() => {
+          openNotification("error");
+          return this.setState({
+            loading: false,
+            show_modal: false,
+          });
         });
-      });
     });
   };
 
@@ -48,6 +85,7 @@ class App extends React.Component {
   };
 
   onLogout = () => {
+    openNotification("success");
     this.setState({ user: null });
   };
 

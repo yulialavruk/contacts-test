@@ -11,7 +11,7 @@ export const validateEmail = (rule, value, callback) => {
 
   callback();
 };
-var r = /[^A-Z-a-z-0-9]/g;
+const r = /[^A-Z-a-z-0-9_.-]/g;
 
 export const validatePassword = (rule, value, callback) => {
   if (value && value.length < 8) {

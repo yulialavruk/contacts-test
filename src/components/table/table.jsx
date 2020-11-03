@@ -118,23 +118,16 @@ export class TableContent extends React.Component {
       const filters = { gender: gender ? [gender] : [], nat };
       if (search) {
         const filteredList = this.nestedFilter(contacts_list, filters);
-        console.log(1);
-
         return this.search(filteredList);
       }
-      console.log(2, filters);
       return this.nestedFilter(contacts_list, filters);
     }
-    console.log(3);
     return contacts_list;
   };
 
   render() {
     const data = this.getList();
-    console.log(data);
-
     const { search, gender, nat } = this.state;
-
     return (
       <Table
         columns={columns}
