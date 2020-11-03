@@ -5,7 +5,7 @@ import { Layout, Row, Col } from "antd";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
-import Profile from "./components/pages/profile";
+import { Profile } from "./components/pages/profile";
 import Contacts from "./components/pages/contacts";
 import "./App.css";
 
@@ -32,13 +32,14 @@ class App extends React.Component {
           seed: this.state.email,
           results: 1,
         },
-      }).then((data) =>
-        this.setState({
+      }).then((data) => {
+        localStorage.setItem("seed_key", this.state.email);
+        return this.setState({
           loading: false,
           show_modal: false,
           user: data,
-        })
-      );
+        });
+      });
     });
   };
 
@@ -88,7 +89,7 @@ class App extends React.Component {
                 <Contacts />
               </Route>
               <Route path="/profile">
-                <Profile user={user} />
+                <Profile user={user && user[0]} />
               </Route>
             </Content>
             <Footer>2020 © Wezom React-Redux Test</Footer>

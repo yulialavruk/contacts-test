@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { Table, Tag } from "antd";
 import { NATIONALITIES } from "../../constants/nationalities";
 import { TableForm } from "./table_form";
@@ -77,12 +78,12 @@ export class TableContent extends React.Component {
   initialState = {
     search: "",
     gender: "",
-    nat: "",
+    nat: [],
   };
 
   state = { ...this.initialState };
 
-  handleChange = (value) => this.setState({ gender: value ? [value] : [] });
+  handleChange = (value) => this.setState({ gender: value ? value : "" });
   handleChangeNat = (value) => this.setState({ nat: value });
   onChangeSearch = (e) => this.setState({ search: e ? e.target.value : "" });
 
@@ -113,16 +114,26 @@ export class TableContent extends React.Component {
   getList = () => {
     const { gender, nat, search } = this.state;
     const { contacts_list } = this.props;
-    const filters = { gender, nat };
-    if (search) {
-      const filteredList = this.nestedFilter(contacts_list, filters);
-      return this.search(filteredList);
+    if (!_.isEqual(this.state, this.initialState)) {
+      const filters = { gender: gender ? [gender] : [], nat };
+      if (search) {
+        const filteredList = this.nestedFilter(contacts_list, filters);
+        console.log(1);
+
+        return this.search(filteredList);
+      }
+      console.log(2, filters);
+      return this.nestedFilter(contacts_list, filters);
     }
-    return this.nestedFilter(contacts_list, filters);
+    console.log(3);
+    return contacts_list;
   };
 
   render() {
     const data = this.getList();
+    console.log(data);
+
+    const { search, gender, nat } = this.state;
 
     return (
       <Table
@@ -134,6 +145,9 @@ export class TableContent extends React.Component {
             handleChange={this.handleChange}
             handleChangeNat={this.handleChangeNat}
             onClear={this.onClear}
+            search={search}
+            gender={gender}
+            nat={nat}
           />
         )}
       />

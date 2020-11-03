@@ -15,6 +15,9 @@ export const TableForm = ({
   handleChange,
   handleChangeNat,
   onClear,
+  search,
+  gender,
+  nat,
 }) => (
   <Form layout="inline">
     <Row>
@@ -22,11 +25,12 @@ export const TableForm = ({
         <Row>
           <Col>
             <Form.Item label="">
-              <Search
+              <Input
                 placeholder="Search by full name"
                 allowClear
                 onChange={onChangeSearch}
                 style={{ width: 200, margin: "0 10px" }}
+                value={search}
               />
             </Form.Item>
           </Col>
@@ -37,6 +41,7 @@ export const TableForm = ({
                 style={{ width: 120 }}
                 allowClear
                 placeholder="Gender"
+                value={gender}
               >
                 <Option value="male">Male</Option>
                 <Option value="female">Female</Option>
@@ -52,6 +57,7 @@ export const TableForm = ({
                 allowClear
                 style={{ width: 150 }}
                 onChange={handleChangeNat}
+                value={nat}
               >
                 {children}
               </Select>

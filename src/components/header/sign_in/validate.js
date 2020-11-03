@@ -11,10 +11,17 @@ export const validateEmail = (rule, value, callback) => {
 
   callback();
 };
+var r = /[^A-Z-a-z-0-9]/g;
 
 export const validatePassword = (rule, value, callback) => {
   if (value && value.length < 8) {
+    callback("The password must be at least 8 characters.");
+
+    return;
+  }
+  if (value && r.test(value)) {
     callback("The password format is invalid.");
+
     return;
   }
 
