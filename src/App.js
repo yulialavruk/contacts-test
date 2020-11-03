@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
+import logo_icon from "./assets/logo.png";
 import { Layout, Row, Col } from "antd";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { fetchData } from "./api/api";
@@ -58,10 +59,7 @@ class App extends React.Component {
             <Header className="header">
               <Row gutter={30}>
                 <Col span={3}>
-                  <img
-                    src={`http://inkubator.ks.ua/testing/react/redux/static/media/wezom-logo.324b96ae.svg`}
-                    alt="logo"
-                  />
+                  <img src={logo_icon} alt="logo" className="logo-icon" />
                 </Col>
                 <Col span={11} align="start">
                   <Link to="/">Home</Link>
