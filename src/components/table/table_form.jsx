@@ -25,7 +25,7 @@ export const TableForm = ({
         <Row>
           <Col>
             <Form.Item label="">
-              <Input
+              <Search
                 placeholder="Search by full name"
                 allowClear
                 onChange={onChangeSearch}

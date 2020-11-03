@@ -138,6 +138,7 @@ export class TableContent extends React.Component {
     return (
       <Table
         columns={columns}
+        rowKey={(record) => record.login.uuid}
         dataSource={data}
         title={() => (
           <TableForm
