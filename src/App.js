@@ -1,28 +1,16 @@
 import React from "react";
 import logo from "./logo.svg";
 import logo_icon from "./assets/logo.png";
-import { Layout, Row, Col, notification } from "antd";
+import { Layout, Row, Col } from "antd";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
+import { openNotification } from "./utils/notification";
 import { Profile } from "./components/pages/profile";
 import Contacts from "./components/pages/contacts";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
-
-const openNotification = (type) => {
-  if (type === "success") {
-    notification[type]({
-      message: "Successfully logged out",
-    });
-  } else {
-    notification[type]({
-      message: "Unable to retrieve profile data due to Network Error",
-      description: "Please, try again later",
-    });
-  }
-};
 
 class App extends React.Component {
   state = {
