@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, Modal, Form, Input, Row, Col } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
-import { Redirect } from "react-router-dom";
-import UserMenu from "../user_menu";
+import { UserMenu } from "../user_menu";
 import { validateEmail, validatePassword } from "./validate";
 
 class SignIn extends React.Component {
@@ -22,11 +21,6 @@ class SignIn extends React.Component {
         {user ? (
           <>
             <UserMenu user={user} onLogout={onLogout} />
-            <Redirect
-              to={{
-                pathname: "/profile",
-              }}
-            />
           </>
         ) : (
           <Button type="link" onClick={() => setShowModal(true)}>

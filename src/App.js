@@ -2,7 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import logo_icon from "./assets/logo.png";
 import { Layout, Row, Col } from "antd";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
 import { openNotification } from "./utils/notification";
@@ -17,7 +17,8 @@ class App extends React.Component {
     loading: false,
     show_modal: false,
     user: null,
-    email: "",
+    email: localStorage.getItem("seed_key"),
+    referrer: false,
   };
 
   onChange = (e) => this.setState({ email: e.target.value });
@@ -26,20 +27,24 @@ class App extends React.Component {
     this.setState({ show_modal });
   };
 
-  // componentDidMount() {
-  //   if (localStorage.getItem("seed_key")) {
-  //     fetchData({
-  //       params: {
-  //         seed: localStorage.getItem("seed_key"),
-  //         results: 1,
-  //       },
-  //     }).then((data) => {
-  //       return this.setState({
-  //         user: data,
-  //       });
-  //     });
-  //   }
-  // }
+  componentDidMount() {
+    const { email } = this.state;
+    email &&
+      fetchData({
+        params: {
+          seed: this.state.email,
+          results: 1,
+        },
+      })
+        .then((data) => {
+          return this.setState({
+            user: data[0],
+          });
+        })
+        .catch(() => {
+          openNotification("error");
+        });
+  }
 
   handleSubmit = () => {
     this.setState({ loading: true }, () => {
@@ -55,7 +60,8 @@ class App extends React.Component {
           return this.setState({
             loading: false,
             show_modal: false,
-            user: data,
+            user: data[0],
+            referrer: "/profile",
           });
         })
         .catch(() => {
@@ -74,11 +80,11 @@ class App extends React.Component {
 
   onLogout = () => {
     openNotification("success");
-    this.setState({ user: null });
+    this.setState({ user: null }, () => localStorage.removeItem("seed_key"));
   };
 
   render() {
-    const { loading, show_modal, user, email } = this.state;
+    const { loading, show_modal, user, email, referrer } = this.state;
     return (
       <BrowserRouter>
         <div className="App">
@@ -114,9 +120,14 @@ class App extends React.Component {
               <Route path="/contacts">
                 <Contacts />
               </Route>
-              <Route path="/profile">
-                <Profile user={user && user[0]} />
-              </Route>
+              <Route path="/profile">{user && <Profile user={user} />}</Route>
+              {referrer && (
+                <Redirect
+                  to={{
+                    pathname: "/profile",
+                  }}
+                />
+              )}
             </Content>
             <Footer>2020 © Wezom React-Redux Test</Footer>
           </Layout>
