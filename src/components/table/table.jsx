@@ -3,6 +3,7 @@ import _ from "lodash";
 import { Table, Tag } from "antd";
 import { NATIONALITIES } from "../../constants/nationalities";
 import { TableForm } from "./table_form";
+import { TableStatistic } from "./statistic";
 
 const columns = [
   {
@@ -129,22 +130,34 @@ export class TableContent extends React.Component {
     const data = this.getList();
     const { search, gender, nat } = this.state;
     return (
-      <Table
-        columns={columns}
-        rowKey={(record) => record.login.uuid}
-        dataSource={data}
-        title={() => (
-          <TableForm
-            onChangeSearch={this.onChangeSearch}
-            handleChange={this.handleChange}
-            handleChangeNat={this.handleChangeNat}
-            onClear={this.onClear}
-            search={search}
-            gender={gender}
-            nat={nat}
-          />
-        )}
-      />
+      <>
+        <TableForm
+          onChangeSearch={this.onChangeSearch}
+          handleChange={this.handleChange}
+          handleChangeNat={this.handleChangeNat}
+          onClear={this.onClear}
+          search={search}
+          gender={gender}
+          nat={nat}
+        />
+        <Table
+          columns={columns}
+          rowKey={(record) => record.login.uuid}
+          dataSource={data}
+          // title={() => (
+          //   <TableForm
+          //     onChangeSearch={this.onChangeSearch}
+          //     handleChange={this.handleChange}
+          //     handleChangeNat={this.handleChangeNat}
+          //     onClear={this.onClear}
+          //     search={search}
+          //     gender={gender}
+          //     nat={nat}
+          //   />
+          // )}
+        />
+        <TableStatistic data={data} />
+      </>
     );
   }
 }
