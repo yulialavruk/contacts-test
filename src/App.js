@@ -7,7 +7,7 @@ import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
 import { openNotification } from "./utils/notification";
 import { Profile } from "./pages/profile";
-import { Contacts } from "./pages/contacts";
+import { Contacts } from "./pages/Contacts";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;

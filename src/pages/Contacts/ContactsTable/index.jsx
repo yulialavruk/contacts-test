@@ -1,9 +1,10 @@
 import React from "react";
 import _ from "lodash";
-import { Table, Tag } from "antd";
-import { NATIONALITIES } from "../../constants/nationalities";
-import { TableForm } from "./table_form";
-import { TableStatistic } from "./statistic";
+import { Table, Tag, Typography } from "antd";
+import { NATIONALITIES } from "../../../constants/nationalities";
+import { TableForm } from "../../../components/table/table_form";
+import { TableStatistic } from "../../../components/table/statistic";
+import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
 
 const columns = [
   {
@@ -45,12 +46,21 @@ const columns = [
     title: "Email",
     dataIndex: "email",
     key: "email",
-    render: (email) => <a href={`mailto:${email}`}>{email}</a>,
+    render: (email) => (
+      <CopyToClipboardText text={email}>
+        <a href={`mailto:${email}`}>{email}</a>
+      </CopyToClipboardText>
+    ),
   },
   {
     title: "Phone",
     dataIndex: "phone",
     key: "phone",
+    render: (phone) => (
+      <CopyToClipboardText text={phone}>
+        <a href={`tel:${phone}`}>{phone}</a>
+      </CopyToClipboardText>
+    ),
   },
   {
     title: "Location",
@@ -58,8 +68,14 @@ const columns = [
     key: "location",
     render: ({ country, street, city, state, postcode }) => (
       <>
-        <h4>/{country}/</h4>
-        <p>{`${street["number"]} ${street["name"]}, ${city}, ${state} ${postcode}`}</p>
+        <CopyToClipboardText
+          text={`[${country}] ${street["number"]} ${street["name"]}, ${city}, ${state} ${postcode}`}
+        >
+          <div>
+            <h4>/{country}/</h4>
+            <p>{`${street["number"]} ${street["name"]}, ${city}, ${state} ${postcode}`}</p>
+          </div>
+        </CopyToClipboardText>
       </>
     ),
   },
