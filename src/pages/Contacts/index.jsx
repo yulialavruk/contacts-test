@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useContacts } from "./useContacts";
-import { Row, Col, Radio, Button, Spin } from "antd";
+import { Row, Col, Radio, Button, Spin, Tooltip } from "antd";
 import { TableContent } from "./ContactsTable";
 import {
   AppstoreOutlined,
@@ -14,24 +14,22 @@ const DATA_VIEW_MODES = {
   GRID: "grid",
 };
 
+const getInitialDataViewMode = () =>
+  localStorage.getItem("dataViewMode") || DATA_VIEW_MODES.TABLE;
+
 export const Contacts = () => {
   const contacts = useContacts();
-  const [dataViewMode, setDataViewMode] = useState(DATA_VIEW_MODES.TABLE);
-  // state = {
-  //   contacts_list: [],
-  //   view_mode: "tabular_view",
-  //   loading: false,
+  const [dataViewMode, setDataViewMode] = useState(getInitialDataViewMode);
+
+  const onChangeViewMode = (e) => setDataViewMode(e.target.value);
+
+  useEffect(() => localStorage.setItem("dataViewMode", dataViewMode), [
+    dataViewMode,
+  ]);
+
+  // const toggleReload = () => {
+  //   useContacts();
   // };
-
-  // onChangeViewMode = (e) =>
-  //   this.setState({ view_mode: e.target.value }, () =>
-  //     localStorage.setItem("view_mode", this.state.view_mode)
-  //   );
-
-  // componentDidMount() {
-  //   this.getContacts();
-  //   localStorage.setItem("view_mode", this.state.view_mode);
-  // }
 
   return (
     <Row align="center">
@@ -48,21 +46,29 @@ export const Contacts = () => {
                 icon={
                   contacts.isLoading ? <LoadingOutlined /> : <ReloadOutlined />
                 }
-                // onClick={this.getContacts}
+                // onClick={toggleReload}
               />
-              {/* <Radio.Group value={view_mode} onChange={this.onChangeViewMode}>
-                <Radio.Button value="tiled_view">
-                  <AppstoreOutlined />
-                </Radio.Button>
-                <Radio.Button value="tabular_view">
-                  <UnorderedListOutlined />
-                </Radio.Button>
-              </Radio.Group> */}
+              <Radio.Group value={dataViewMode} onChange={onChangeViewMode}>
+                <Tooltip title={DATA_VIEW_MODES.GRID}>
+                  <Radio.Button value={DATA_VIEW_MODES.GRID}>
+                    <AppstoreOutlined />
+                  </Radio.Button>
+                </Tooltip>
+                <Tooltip title={DATA_VIEW_MODES.TABLE}>
+                  <Radio.Button value={DATA_VIEW_MODES.TABLE}>
+                    <UnorderedListOutlined />
+                  </Radio.Button>
+                </Tooltip>
+              </Radio.Group>
             </div>
           </Col>
         </Row>
         <Spin spinning={contacts.isLoading}>
-          <TableContent contacts_list={contacts.data} />
+          {dataViewMode === DATA_VIEW_MODES.TABLE ? (
+            <TableContent contacts_list={contacts.data} />
+          ) : (
+            <div>grid</div>
+          )}
         </Spin>
       </Col>
     </Row>
