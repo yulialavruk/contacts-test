@@ -5,8 +5,8 @@ import { Layout, Row, Col } from "antd";
 import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
-import { openNotification } from "./utils/notification";
-import { Profile } from "./pages/profile";
+import { openNotification } from "./components/notification";
+import { Profile } from "./pages/Profile";
 import { Contacts } from "./pages/Contacts";
 import "./App.css";
 

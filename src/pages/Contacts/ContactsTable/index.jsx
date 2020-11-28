@@ -2,8 +2,8 @@ import React from "react";
 import _ from "lodash";
 import { Table, Tag, Typography } from "antd";
 import { NATIONALITIES } from "../../../constants/nationalities";
-import { TableForm } from "../../../components/table/table_form";
-import { TableStatistic } from "../../../components/table/statistic";
+import { TableForm } from "../ContactsFilters";
+import { TableStatistic } from "../ContactsStatistic";
 import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
 
 const columns = [
@@ -91,7 +91,7 @@ const columns = [
   },
 ];
 
-export class TableContent extends React.Component {
+export class ContactsTable extends React.Component {
   initialState = {
     search: "",
     gender: "",

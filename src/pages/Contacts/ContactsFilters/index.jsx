@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Row, Col, Select, Input, Checkbox, Button } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
-import { NATIONALITIES } from "../../constants/nationalities";
+import { NATIONALITIES } from "../../../constants/nationalities";
 const { Option } = Select;
 const { Search } = Input;
 

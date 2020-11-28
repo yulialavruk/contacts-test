@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { openNotification } from "../../utils/notification";
+import { openNotification } from "../../components/notification";
 
 export const useContacts = () => {
   const [data, setData] = useState([]);
