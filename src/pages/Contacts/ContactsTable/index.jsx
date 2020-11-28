@@ -1,9 +1,6 @@
 import React from "react";
-import _ from "lodash";
 import { Table, Tag, Typography } from "antd";
 import { NATIONALITIES } from "../../../constants/nationalities";
-import { TableForm } from "../ContactsFilters";
-import { TableStatistic } from "../ContactsStatistic";
 import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
 
 const columns = [
@@ -92,74 +89,13 @@ const columns = [
 ];
 
 export class ContactsTable extends React.Component {
-  initialState = {
-    search: "",
-    gender: "",
-    nat: [],
-  };
-
-  state = { ...this.initialState };
-
-  handleChange = (value) => this.setState({ gender: value ? value : "" });
-  handleChangeNat = (value) => this.setState({ nat: value });
-  onChangeSearch = (e) => this.setState({ search: e ? e.target.value : "" });
-
-  onClear = () => {
-    this.setState({ ...this.initialState });
-  };
-  nestedFilter = (targetArray, filters) => {
-    var filterKeys = Object.keys(filters);
-    return targetArray.filter(function (eachObj) {
-      return filterKeys.every(function (eachKey) {
-        if (!filters[eachKey].length) {
-          return true;
-        }
-        return filters[eachKey].includes(eachObj[eachKey]);
-      });
-    });
-  };
-
-  search = (data) => {
-    const { search } = this.state;
-    return data.filter((contact) =>
-      (contact.name.first + contact.name.last)
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
-  };
-
-  getList = () => {
-    const { gender, nat, search } = this.state;
-    const { contacts_list } = this.props;
-    if (!_.isEqual(this.state, this.initialState)) {
-      const filters = { gender: gender ? [gender] : [], nat };
-      if (search) {
-        const filteredList = this.nestedFilter(contacts_list, filters);
-        return this.search(filteredList);
-      }
-      return this.nestedFilter(contacts_list, filters);
-    }
-    return contacts_list;
-  };
-
   render() {
-    const data = this.getList();
-    const { search, gender, nat } = this.state;
     return (
       <>
-        <TableForm
-          onChangeSearch={this.onChangeSearch}
-          handleChange={this.handleChange}
-          handleChangeNat={this.handleChangeNat}
-          onClear={this.onClear}
-          search={search}
-          gender={gender}
-          nat={nat}
-        />
         <Table
           columns={columns}
           rowKey={(record) => record.login.uuid}
-          dataSource={data}
+          dataSource={this.props.data}
           // title={() => (
           //   <TableForm
           //     onChangeSearch={this.onChangeSearch}
@@ -172,7 +108,7 @@ export class ContactsTable extends React.Component {
           //   />
           // )}
         />
-        <TableStatistic data={data} />
+        {/* <TableStatistic data={this.props.contactsData} /> */}
       </>
     );
   }
