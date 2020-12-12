@@ -10,18 +10,22 @@ for (let key in NATIONALITIES) {
   children.push(<Option key={key}>{NATIONALITIES[key].name}</Option>);
 }
 
-export const TableForm = ({ setFilters, onClear, search, gender, nat }) => {
+const initialState = {
+  search: "",
+  gender: "",
+  nat: [],
+};
+
+export const ContactsFilters = ({ setFilters, search, gender, nat }) => {
   const handleChange = useCallback(
     (value) =>
       setFilters((prevState) => ({ ...prevState, gender: value ? value : "" })),
     [setFilters]
   );
-
   const handleChangeNat = useCallback(
     (value) => setFilters((prevState) => ({ ...prevState, nat: value })),
     [setFilters]
   );
-
   const onChangeSearch = useCallback(
     (e) =>
       setFilters((prevState) => ({
@@ -31,27 +35,37 @@ export const TableForm = ({ setFilters, onClear, search, gender, nat }) => {
     [setFilters]
   );
 
+  const onClear = useCallback(() => {
+    setFilters({ ...initialState });
+  }, [setFilters]);
+
   return (
-    <Form layout="inline">
-      <Row>
-        <Col>
-          <Row>
-            <Col>
+    <Form layout="inline" className="box">
+      <Row
+        className="contacts-filters box__content"
+        align="middle"
+        justify="center"
+      >
+        <Col flex="auto">
+          <Row align="middle" justify="center">
+            <Col lg={11} xs={24}>
               <Form.Item label="">
                 <Search
+                  className="contacts-filters__item"
+                  size="large"
                   placeholder="Search by full name"
                   allowClear
                   onChange={onChangeSearch}
-                  style={{ width: 200, margin: "0 10px" }}
                   value={search}
                 />
               </Form.Item>
             </Col>
-            <Col>
+            <Col lg={4} sm={10} xs={24}>
               <Form.Item label="">
                 <Select
+                  className="contacts-filters__item"
+                  size="large"
                   onChange={handleChange}
-                  style={{ width: 120 }}
                   allowClear
                   placeholder="Gender"
                   value={gender}
@@ -62,13 +76,14 @@ export const TableForm = ({ setFilters, onClear, search, gender, nat }) => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col>
+            <Col lg={5} sm={14} xs={24}>
               <Form.Item label="">
                 <Select
+                  className="contacts-filters__item"
+                  size="large"
                   placeholder="Nationality"
                   mode="multiple"
                   allowClear
-                  style={{ width: 150 }}
                   onChange={handleChangeNat}
                   value={nat}
                 >
@@ -76,14 +91,14 @@ export const TableForm = ({ setFilters, onClear, search, gender, nat }) => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col>
-              <Form.Item label="">
-                <Checkbox>I am creator</Checkbox>
+            <Col lg={4} sm={7} xs={24}>
+              <Form.Item className="contacts-filters__item" label="">
+                <Checkbox size="large">I am creator</Checkbox>
               </Form.Item>
             </Col>
           </Row>
         </Col>
-        <Col>
+        <Col flex="100px">
           <Button type="link" onClick={onClear}>
             <CloseOutlined />
             Clear

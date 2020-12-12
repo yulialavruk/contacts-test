@@ -94,6 +94,7 @@ export class ContactsTable extends React.Component {
       <>
         <Table
           columns={columns}
+          size="middle"
           rowKey={(record) => record.login.uuid}
           dataSource={this.props.data}
           // title={() => (

@@ -5,9 +5,13 @@ import { useDataViewMode } from "./useDataViewMode";
 import { Row, Col, Button, Spin } from "antd";
 import { DATA_VIEW_MODES } from "./constants";
 import { ToggleDataViewMode } from "./ToggleDataViewMode";
-import { TableForm } from "./ContactsFilters";
+import { ContactsFilters } from "./ContactsFilters";
 import { ContactsTable } from "./ContactsTable";
+import { ContactsStatistic } from "./ContactsStatistic";
 import { ReloadOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Typography } from "antd";
+
+const { Title } = Typography;
 
 const initialState = {
   search: "",
@@ -19,10 +23,6 @@ export const Contacts = () => {
   const contacts = useContacts();
   const [dataViewMode, setDataViewMode] = useDataViewMode();
   const [{ search, gender, nat }, setFilters] = useState(initialState);
-
-  const onClear = () => {
-    setFilters({ ...initialState });
-  };
 
   const nestedFilter = (targetArray, filters) => {
     var filterKeys = Object.keys(filters);
@@ -57,51 +57,49 @@ export const Contacts = () => {
   };
 
   const contactsData = getList();
-  console.log(contactsData);
 
   // const toggleReload = () => {
   //   useContacts();
   // };
 
   return (
-    <Row align="center">
-      <Col span={20}>
-        <Row justify="space-between">
-          <Col>
-            <h1 align="left">Contacts</h1>
-          </Col>
-          <Col>
-            <div>
-              <Button
-                type="dashed"
-                shape="circle"
-                icon={
-                  contacts.isLoading ? <LoadingOutlined /> : <ReloadOutlined />
-                }
-                // onClick={toggleReload}
-              />
-              <ToggleDataViewMode
-                dataViewMode={dataViewMode}
-                setDataViewMode={setDataViewMode}
-              />
-            </div>
-          </Col>
-        </Row>
-        <TableForm
-          setFilters={setFilters}
-          onClear={onClear}
-          search={search}
-          gender={gender}
-          nat={nat}
-        />
-        <Spin spinning={contacts.isLoading}>
-          {dataViewMode === DATA_VIEW_MODES.TABLE ? (
-            <ContactsTable data={contactsData} />
-          ) : (
-            <div>grid</div>
-          )}
-        </Spin>
-      </Col>
-    </Row>
+    <>
+      <Row justify="space-between" align="middle">
+        <Col>
+          <Title level={2}>Contacts</Title>
+        </Col>
+        <Col>
+          <div>
+            <Button
+              className="btn-reload"
+              type="dashed"
+              shape="circle"
+              icon={
+                contacts.isLoading ? <LoadingOutlined /> : <ReloadOutlined />
+              }
+              // onClick={toggleReload}
+            />
+            <ToggleDataViewMode
+              dataViewMode={dataViewMode}
+              setDataViewMode={setDataViewMode}
+            />
+          </div>
+        </Col>
+      </Row>
+      <ContactsFilters
+        setFilters={setFilters}
+        search={search}
+        gender={gender}
+        nat={nat}
+      />
+      <Spin spinning={contacts.isLoading}>
+        {dataViewMode === DATA_VIEW_MODES.TABLE ? (
+          <ContactsTable data={contactsData} />
+        ) : (
+          <div>grid</div>
+        )}
+      </Spin>
+      <ContactsStatistic data={contactsData} />
+    </>
   );
 };

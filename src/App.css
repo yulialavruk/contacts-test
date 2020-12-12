@@ -1,9 +1,8 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
 }
 
 .App-logo {
-  margin: 150px 0;
   height: 40vmin;
   pointer-events: none;
 }
@@ -37,10 +36,12 @@
     transform: rotate(360deg);
   }
 }
-
-/* .layout {
-  height: 100vh;
-} */
+.text-bold {
+  font-weight: bold;
+}
+.layout {
+  min-height: 100vh;
+}
 
 .header {
   background-color: #fff;
@@ -56,7 +57,7 @@
 }
 
 .main {
-  margin-top: 30px;
+  padding: 15px 40px;
 }
 
 .profile__picture {
@@ -67,4 +68,40 @@
 .profile__title {
   font-size: 30px;
   margin: 30px 0;
+}
+
+/* Contacts */
+.btn-reload {
+  margin-right: 8px;
+}
+
+.box {
+  padding: 10px 10px;
+  background-color: #fafafa;
+  margin: 0 0 15px 0;
+}
+
+.box__content {
+  padding: 15px;
+  background-color: #fff;
+  width: 100%;
+}
+
+.contacts-filters__item {
+  width: 100%;
+  padding: 6px;
+}
+
+.col-padding {
+  padding: 15px 30px 15px 0;
+}
+
+.statistic-nat__wrap {
+  font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.statistic-nat__item {
+  width: 195px;
+  padding: 6px 0;
 }
