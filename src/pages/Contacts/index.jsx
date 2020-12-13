@@ -15,7 +15,7 @@ const { Title } = Typography;
 
 const initialState = {
   search: "",
-  gender: "",
+  gender: null,
   nat: [],
 };
 

@@ -18,8 +18,7 @@ const initialState = {
 
 export const ContactsFilters = ({ setFilters, search, gender, nat }) => {
   const handleChange = useCallback(
-    (value) =>
-      setFilters((prevState) => ({ ...prevState, gender: value ? value : "" })),
+    (value) => setFilters((prevState) => ({ ...prevState, gender: value })),
     [setFilters]
   );
   const handleChangeNat = useCallback(

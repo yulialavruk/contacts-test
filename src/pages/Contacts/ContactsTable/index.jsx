@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Tag, Typography } from "antd";
+import { Table, Tag } from "antd";
 import { NATIONALITIES } from "../../../constants/nationalities";
 import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
 
@@ -97,19 +97,7 @@ export class ContactsTable extends React.Component {
           size="middle"
           rowKey={(record) => record.login.uuid}
           dataSource={this.props.data}
-          // title={() => (
-          //   <TableForm
-          //     onChangeSearch={this.onChangeSearch}
-          //     handleChange={this.handleChange}
-          //     handleChangeNat={this.handleChangeNat}
-          //     onClear={this.onClear}
-          //     search={search}
-          //     gender={gender}
-          //     nat={nat}
-          //   />
-          // )}
         />
-        {/* <TableStatistic data={this.props.contactsData} /> */}
       </>
     );
   }
