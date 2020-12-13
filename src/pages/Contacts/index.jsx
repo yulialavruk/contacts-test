@@ -24,39 +24,55 @@ export const Contacts = () => {
   const [dataViewMode, setDataViewMode] = useDataViewMode();
   const [{ search, gender, nat }, setFilters] = useState(initialState);
 
-  const nestedFilter = (targetArray, filters) => {
-    var filterKeys = Object.keys(filters);
-    return targetArray.filter(function (eachObj) {
-      return filterKeys.every(function (eachKey) {
-        if (!filters[eachKey].length) {
-          return true;
-        }
-        return filters[eachKey].includes(eachObj[eachKey]);
-      });
-    });
-  };
+  const getDataByFilters = (contacts, { search, gender, nat }) => {
+    let data = [...contacts];
 
-  const searchFilter = (data) => {
-    return data.filter((contact) =>
-      (contact.name.first + contact.name.last)
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
-  };
-
-  const getList = () => {
-    if (!_.isEqual({ search, gender, nat }, initialState)) {
-      const filters = { gender: gender ? [gender] : [], nat };
-      if (search) {
-        const filteredList = nestedFilter(contacts.data, filters);
-        return searchFilter(filteredList);
-      }
-      return nestedFilter(contacts.data, filters);
+    if (gender) {
+      return data.filter((contact) => contact.gender.includes(gender));
     }
-    return contacts.data;
+
+    return data;
   };
 
-  const contactsData = getList();
+  const dataByFilters = getDataByFilters(contacts.data, {
+    search,
+    gender,
+    nat,
+  });
+
+  // const nestedFilter = (targetArray, filters) => {
+  //   var filterKeys = Object.keys(filters);
+  //   return targetArray.filter(function (eachObj) {
+  //     return filterKeys.every(function (eachKey) {
+  //       if (!filters[eachKey].length) {
+  //         return true;
+  //       }
+  //       return filters[eachKey].includes(eachObj[eachKey]);
+  //     });
+  //   });
+  // };
+
+  // const searchFilter = (data) => {
+  //   return data.filter((contact) =>
+  //     (contact.name.first + contact.name.last)
+  //       .toLowerCase()
+  //       .includes(search.toLowerCase())
+  //   );
+  // };
+
+  // const getList = () => {
+  //   if (!_.isEqual({ search, gender, nat }, initialState)) {
+  //     const filters = { gender: gender ? [gender] : [], nat };
+  //     if (search) {
+  //       const filteredList = nestedFilter(contacts.data, filters);
+  //       return searchFilter(filteredList);
+  //     }
+  //     return nestedFilter(contacts.data, filters);
+  //   }
+  //   return contacts.data;
+  // };
+
+  // const contactsData = getList();
 
   // const toggleReload = () => {
   //   useContacts();
@@ -94,12 +110,12 @@ export const Contacts = () => {
       />
       <Spin spinning={contacts.isLoading}>
         {dataViewMode === DATA_VIEW_MODES.TABLE ? (
-          <ContactsTable data={contactsData} />
+          <ContactsTable data={dataByFilters} />
         ) : (
           <div>grid</div>
         )}
       </Spin>
-      <ContactsStatistic data={contactsData} />
+      <ContactsStatistic data={dataByFilters} />
     </>
   );
 };
