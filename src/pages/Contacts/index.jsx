@@ -1,5 +1,4 @@
 import { useState } from "react";
-import _ from "lodash";
 import { useContacts } from "./useContacts";
 import { useDataViewMode } from "./useDataViewMode";
 import { Row, Col, Button, Spin } from "antd";
@@ -27,8 +26,20 @@ export const Contacts = () => {
   const getDataByFilters = (contacts, { search, gender, nat }) => {
     let data = [...contacts];
 
+    if (search) {
+      data = data.filter((contact) =>
+        (contact.name.first + contact.name.last)
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    }
+
     if (gender) {
-      return data.filter((contact) => contact.gender.includes(gender));
+      data = data.filter((contact) => contact.gender === gender);
+    }
+
+    if (nat.length) {
+      data = data.filter((contact) => nat.indexOf(contact.nat) !== -1);
     }
 
     return data;
@@ -39,44 +50,6 @@ export const Contacts = () => {
     gender,
     nat,
   });
-
-  // const nestedFilter = (targetArray, filters) => {
-  //   var filterKeys = Object.keys(filters);
-  //   return targetArray.filter(function (eachObj) {
-  //     return filterKeys.every(function (eachKey) {
-  //       if (!filters[eachKey].length) {
-  //         return true;
-  //       }
-  //       return filters[eachKey].includes(eachObj[eachKey]);
-  //     });
-  //   });
-  // };
-
-  // const searchFilter = (data) => {
-  //   return data.filter((contact) =>
-  //     (contact.name.first + contact.name.last)
-  //       .toLowerCase()
-  //       .includes(search.toLowerCase())
-  //   );
-  // };
-
-  // const getList = () => {
-  //   if (!_.isEqual({ search, gender, nat }, initialState)) {
-  //     const filters = { gender: gender ? [gender] : [], nat };
-  //     if (search) {
-  //       const filteredList = nestedFilter(contacts.data, filters);
-  //       return searchFilter(filteredList);
-  //     }
-  //     return nestedFilter(contacts.data, filters);
-  //   }
-  //   return contacts.data;
-  // };
-
-  // const contactsData = getList();
-
-  // const toggleReload = () => {
-  //   useContacts();
-  // };
 
   return (
     <>
