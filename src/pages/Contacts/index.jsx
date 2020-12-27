@@ -6,6 +6,7 @@ import { DATA_VIEW_MODES } from "./constants";
 import { ToggleDataViewMode } from "./ToggleDataViewMode";
 import { ContactsFilters } from "./ContactsFilters";
 import { ContactsTable } from "./ContactsTable";
+import { ContactsGrid } from "./ContactsGrid";
 import { ContactsStatistic } from "./ContactsStatistic";
 import { ReloadOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Typography } from "antd";
@@ -85,7 +86,7 @@ export const Contacts = () => {
         {dataViewMode === DATA_VIEW_MODES.TABLE ? (
           <ContactsTable data={dataByFilters} />
         ) : (
-          <div>grid</div>
+          <ContactsGrid data={dataByFilters} />
         )}
       </Spin>
       <ContactsStatistic data={dataByFilters} />

@@ -88,17 +88,15 @@ const columns = [
   },
 ];
 
-export class ContactsTable extends React.Component {
-  render() {
-    return (
-      <>
-        <Table
-          columns={columns}
-          size="middle"
-          rowKey={(record) => record.login.uuid}
-          dataSource={this.props.data}
-        />
-      </>
-    );
-  }
-}
+export const ContactsTable = ({ data }) => {
+  return (
+    <>
+      <Table
+        columns={columns}
+        size="middle"
+        rowKey={(record) => record.login.uuid}
+        dataSource={data}
+      />
+    </>
+  );
+};
