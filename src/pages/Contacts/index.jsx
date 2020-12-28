@@ -86,7 +86,7 @@ export const Contacts = () => {
         {dataViewMode === DATA_VIEW_MODES.TABLE ? (
           <ContactsTable data={dataByFilters} />
         ) : (
-          <ContactsGrid data={dataByFilters} />
+          <ContactsGrid data={contacts.isLoading === false && dataByFilters} />
         )}
       </Spin>
       <ContactsStatistic data={dataByFilters} />

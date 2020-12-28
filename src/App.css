@@ -105,3 +105,11 @@
   width: 195px;
   padding: 6px 0;
 }
+
+.contacts-card {
+  height: 100%;
+}
+.contacts-card__img {
+  height: 260px;
+  object-fit: cover;
+}
