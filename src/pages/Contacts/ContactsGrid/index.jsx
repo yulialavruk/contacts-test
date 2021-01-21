@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, Pagination, Col, Row, Tag } from "antd";
 import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
 import { NATIONALITIES } from "../../../constants/nationalities";
@@ -16,7 +17,7 @@ export const ContactsGrid = ({ data }) => {
     <>
       <Row gutter={[16, 16]}>
         {data &&
-          data.slice(minValue, maxValue).map((contact) => (
+          data.slice(minValue, maxValue).map((contact, index) => (
             <Col span={8} key={contact.login.uuid}>
               <Card
                 className="contacts-card"
@@ -29,7 +30,12 @@ export const ContactsGrid = ({ data }) => {
                   />
                 }
               >
-                <a href="/#">{`${contact.name["title"]}. ${contact.name["first"]} ${contact.name["last"]}`}</a>
+                <Link
+                  to={{
+                    pathname: `/contact/${contact.login.uuid}`,
+                    propsContact: contact,
+                  }}
+                >{`${contact.name["title"]}. ${contact.name["first"]} ${contact.name["last"]}`}</Link>
                 <span> ({contact.dob.age + " years "}) </span>
                 <div>
                   <CopyToClipboardText text={contact.email}>

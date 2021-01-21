@@ -2,12 +2,13 @@ import React from "react";
 import logo from "./logo.svg";
 import logo_icon from "./assets/logo.png";
 import { Layout, Row, Col } from "antd";
-import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect, Switch } from "react-router-dom";
 import { fetchData } from "./api/api";
 import SignIn from "./components/header/sign_in/sign_in";
 import { openNotification } from "./components/notification";
-import { Profile } from "./pages/Profile";
+import { UserProfile } from "./pages/UserProfile";
 import { Contacts } from "./pages/Contacts";
+import { ContactView } from "./pages/ContactView";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
@@ -120,7 +121,12 @@ class App extends React.Component {
               <Route path="/contacts">
                 <Contacts />
               </Route>
-              <Route path="/profile">{user && <Profile user={user} />}</Route>
+              <Route path="/contact/:id">
+                <ContactView />
+              </Route>
+              <Route path="/profile">
+                {user && <UserProfile user={user} />}
+              </Route>
               {referrer && (
                 <Redirect
                   to={{
@@ -129,7 +135,9 @@ class App extends React.Component {
                 />
               )}
             </Content>
-            <Footer>2020 © Wezom React-Redux Test</Footer>
+            <Footer className="layout__footer">
+              2020 © Wezom React-Redux Test
+            </Footer>
           </Layout>
         </div>
       </BrowserRouter>

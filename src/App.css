@@ -3,8 +3,11 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  max-width: 300px;
   pointer-events: none;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 25%;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -39,8 +42,15 @@
 .text-bold {
   font-weight: bold;
 }
+
 .layout {
   min-height: 100vh;
+}
+
+.layout__footer {
+  padding: 12px 2vw !important;
+  background-color: #f1f1f1 !important;
+  text-align: center;
 }
 
 .header {

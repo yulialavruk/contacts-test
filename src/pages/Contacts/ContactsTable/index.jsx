@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Table, Tag } from "antd";
 import { NATIONALITIES } from "../../../constants/nationalities";
 import { CopyToClipboardText } from "../../../components/CopyToClipboardText";
@@ -8,17 +9,30 @@ const columns = [
     title: "Avatar",
     dataIndex: "picture",
     key: "cell",
-    render: (avatar) => (
-      <img className="user-icon" src={avatar.medium} alt="" />
-    ),
+    render: (avatar) => {
+      // console.log(data);
+      return <img className="user-icon" src={avatar.medium} alt="" />;
+    },
   },
   {
     title: "Full name",
     dataIndex: "name",
     key: "full_name",
-    render: (name) => (
-      <a href="/#">{`${name["title"]}. ${name["first"]} ${name["last"]}`}</a>
+    render: (name, data) => (
+      <Link
+        to={{
+          pathname: `/contact/${data.login.uuid}`,
+          propsContact: data,
+        }}
+      >
+        {`${name["title"]}. ${name["first"]} ${name["last"]}`}
+      </Link>
+      // <a href="/#">{`${name["title"]}. ${name["first"]} ${name["last"]}`}</a>
     ),
+    sorter: (a, b) =>
+      `${a.name["title"]} ${a.name["first"]}`.localeCompare(
+        `${b.name["title"]} ${b.name["first"]}`
+      ),
   },
   {
     title: "Birthday",
