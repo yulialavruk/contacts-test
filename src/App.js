@@ -8,7 +8,8 @@ import SignIn from "./components/header/sign_in/sign_in";
 import { openNotification } from "./components/notification";
 import { UserProfile } from "./pages/UserProfile";
 import { Contacts } from "./pages/Contacts";
-import { ContactView } from "./pages/ContactView";
+import { ContactProfile } from "./pages/ContactProfile";
+import { ErrorPage } from "./pages/Eror404";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
@@ -115,18 +116,25 @@ class App extends React.Component {
               </Row>
             </Header>
             <Content className="main">
-              <Route exact path="/">
-                <img src={logo} className="App-logo" alt="logo" />
-              </Route>
-              <Route path="/contacts">
-                <Contacts />
-              </Route>
-              <Route path="/contact/:id">
-                <ContactView />
-              </Route>
-              <Route path="/profile">
-                {user && <UserProfile user={user} />}
-              </Route>
+              <Switch>
+                <Route exact path="/">
+                  <img src={logo} className="App-logo" alt="logo" />
+                </Route>
+
+                {user && (
+                  <Route exact path="/contacts">
+                    <Contacts />
+                  </Route>
+                )}
+                <Route path="/contact/:id">
+                  <ContactProfile />
+                </Route>
+                <Route exact path="/profile">
+                  {user && <UserProfile user={user} />}
+                </Route>
+                <Route path="*" component={ErrorPage} />
+              </Switch>
+
               {referrer && (
                 <Redirect
                   to={{

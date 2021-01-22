@@ -1,6 +1,5 @@
 import React from "react";
 import { Profile } from "../../components/Profile";
-import { Row, Col } from "antd";
 
 export const UserProfile = ({ user }) => (
   <div className="profile">

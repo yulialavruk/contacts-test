@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { Profile } from "../../components/Profile";
 
-export const ContactView = () => {
+export const ContactProfile = () => {
   const location = useLocation();
 
   const { propsContact } = location;
