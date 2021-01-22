@@ -91,7 +91,7 @@ class App extends React.Component {
       <BrowserRouter>
         <div className="App">
           <Layout className="layout">
-            <Header className="header">
+            <Header className="layout__header">
               <Row gutter={30}>
                 <Col span={3}>
                   <img src={logo_icon} alt="logo" className="logo-icon" />
@@ -115,7 +115,7 @@ class App extends React.Component {
                 </Col>
               </Row>
             </Header>
-            <Content className="main">
+            <Content className="layout__main">
               <Switch>
                 <Route exact path="/">
                   <img src={logo} className="App-logo" alt="logo" />
