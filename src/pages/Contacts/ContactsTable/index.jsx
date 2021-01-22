@@ -10,7 +10,6 @@ const columns = [
     dataIndex: "picture",
     key: "cell",
     render: (avatar) => {
-      // console.log(data);
       return <img className="user-icon" src={avatar.medium} alt="" />;
     },
   },
@@ -21,13 +20,12 @@ const columns = [
     render: (name, data) => (
       <Link
         to={{
-          pathname: `/contact/${data.login.uuid}`,
+          pathname: `/contacts/${data.login.uuid}`,
           propsContact: data,
         }}
       >
         {`${name["title"]}. ${name["first"]} ${name["last"]}`}
       </Link>
-      // <a href="/#">{`${name["title"]}. ${name["first"]} ${name["last"]}`}</a>
     ),
     sorter: (a, b) =>
       `${a.name["title"]} ${a.name["first"]}`.localeCompare(

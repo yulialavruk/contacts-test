@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "antd";
 
 export const ErrorPage = () => {
@@ -7,9 +7,11 @@ export const ErrorPage = () => {
       <div className="error__code">404</div>
       <div className="error__message">Requested page not found!</div>
       <div className="error__back-button">
-        <Button type="primary" size="large">
-          Back to home
-        </Button>
+        <Link to="/">
+          <Button type="primary" size="large">
+            Back to home
+          </Button>
+        </Link>
       </div>
     </div>
   );

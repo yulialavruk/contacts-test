@@ -24,6 +24,10 @@
   font-weight: bold;
 }
 
+.text-center {
+  text-align: center;
+}
+
 /* layout */
 
 .layout {
@@ -60,6 +64,7 @@
 .profile__picture {
   width: 250px;
   height: 250px;
+  margin-bottom: 30px;
 }
 
 .profile__title {

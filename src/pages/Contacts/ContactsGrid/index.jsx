@@ -32,7 +32,7 @@ export const ContactsGrid = ({ data }) => {
               >
                 <Link
                   to={{
-                    pathname: `/contact/${contact.login.uuid}`,
+                    pathname: `/contacts/${contact.login.uuid}`,
                     propsContact: contact,
                   }}
                 >{`${contact.name["title"]}. ${contact.name["first"]} ${contact.name["last"]}`}</Link>

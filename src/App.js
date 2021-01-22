@@ -1,156 +1,97 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import logo from "./logo.svg";
-import logo_icon from "./assets/logo.png";
-import { Layout, Row, Col } from "antd";
-import { BrowserRouter, Route, Link, Redirect, Switch } from "react-router-dom";
+import { Layout, Row, Col, Button } from "antd";
+import { LoginOutlined } from "@ant-design/icons";
+import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import { fetchData } from "./api/api";
-import SignIn from "./components/header/sign_in/sign_in";
+import { SignInModal } from "./components/SignInModal";
 import { openNotification } from "./components/notification";
 import { UserProfile } from "./pages/UserProfile";
+import { UserMenu } from "./components/UserMenu";
 import { Contacts } from "./pages/Contacts";
 import { ContactProfile } from "./pages/ContactProfile";
 import { ErrorPage } from "./pages/Eror404";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
+const seedKey = localStorage.getItem("seed_key");
 
-class App extends React.Component {
-  state = {
-    loading: false,
-    show_modal: false,
-    user: null,
-    email: localStorage.getItem("seed_key"),
-    referrer: false,
-  };
+const App = () => {
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [user, setUser] = useState(null);
 
-  onChange = (e) => this.setState({ email: e.target.value });
+  console.log("render");
 
-  setShowModal = (show_modal) => {
-    this.setState({ show_modal });
-  };
-
-  componentDidMount() {
-    const { email } = this.state;
-    email &&
+  useEffect(() => {
+    console.log(seedKey);
+    seedKey &&
       fetchData({
         params: {
-          seed: this.state.email,
+          seed: seedKey,
           results: 1,
         },
       })
         .then((data) => {
-          return this.setState({
-            user: data[0],
-          });
+          setUser(data[0]);
         })
         .catch(() => {
           openNotification("error");
         });
-  }
+  }, []);
 
-  handleSubmit = () => {
-    this.setState({ loading: true }, () => {
-      fetchData({
-        params: {
-          seed: this.state.email,
-          results: 1,
-        },
-      })
-        .then((data) => {
-          localStorage.setItem("seed_key", this.state.email);
-          console.log(data);
-          return this.setState({
-            loading: false,
-            show_modal: false,
-            user: data[0],
-            referrer: "/profile",
-          });
-        })
-        .catch(() => {
-          openNotification("error");
-          return this.setState({
-            loading: false,
-            show_modal: false,
-          });
-        });
-    });
-  };
+  return (
+    <BrowserRouter>
+      <div className="App">
+        <Layout className="layout">
+          <Header className="layout__header">
+            <Row gutter={30}>
+              <Col span={12} align="start">
+                <Link to="/">Home</Link>
+                {user && <Link to="/contacts"> Contacts</Link>}
+              </Col>
+              <Col span={12} align="end">
+                {user ? (
+                  <UserMenu user={user} setUser={setUser} />
+                ) : (
+                  <Button type="link" onClick={() => setIsShowModal(true)}>
+                    <LoginOutlined /> Sign In
+                  </Button>
+                )}
+                <SignInModal
+                  isShowModal={isShowModal}
+                  setIsShowModal={setIsShowModal}
+                  setUser={setUser}
+                />
+              </Col>
+            </Row>
+          </Header>
+          <Content className="layout__main">
+            <Switch>
+              <Route exact path="/">
+                <img src={logo} className="App-logo" alt="logo" />
+              </Route>
 
-  handleCancel = () => {
-    this.setState({ show_modal: false });
-  };
-
-  onLogout = () => {
-    openNotification("success");
-    this.setState({ user: null }, () => localStorage.removeItem("seed_key"));
-  };
-
-  render() {
-    const { loading, show_modal, user, email, referrer } = this.state;
-    return (
-      <BrowserRouter>
-        <div className="App">
-          <Layout className="layout">
-            <Header className="layout__header">
-              <Row gutter={30}>
-                <Col span={3}>
-                  <img src={logo_icon} alt="logo" className="logo-icon" />
-                </Col>
-                <Col span={11} align="start">
-                  <Link to="/">Home</Link>
-                  {user ? <Link to="/contacts"> Contacts</Link> : ""}
-                </Col>
-                <Col span={10} align="end">
-                  <SignIn
-                    loading={loading}
-                    show_modal={show_modal}
-                    user={user}
-                    email={email}
-                    onChange={this.onChange}
-                    setShowModal={this.setShowModal}
-                    handleSubmit={this.handleSubmit}
-                    handleCancel={this.handleCancel}
-                    onLogout={this.onLogout}
-                  />
-                </Col>
-              </Row>
-            </Header>
-            <Content className="layout__main">
-              <Switch>
-                <Route exact path="/">
-                  <img src={logo} className="App-logo" alt="logo" />
-                </Route>
-
-                {user && (
+              {user && (
+                <>
                   <Route exact path="/contacts">
                     <Contacts />
                   </Route>
-                )}
-                <Route path="/contact/:id">
-                  <ContactProfile />
-                </Route>
-                <Route exact path="/profile">
-                  {user && <UserProfile user={user} />}
-                </Route>
-                <Route path="*" component={ErrorPage} />
-              </Switch>
-
-              {referrer && (
-                <Redirect
-                  to={{
-                    pathname: "/profile",
-                  }}
-                />
+                  <Route path="/contacts/:id">
+                    <ContactProfile />
+                  </Route>
+                  <Route path="/profile">
+                    <UserProfile user={user} />
+                  </Route>
+                </>
               )}
-            </Content>
-            <Footer className="layout__footer">
-              2020 © Wezom React-Redux Test
-            </Footer>
-          </Layout>
-        </div>
-      </BrowserRouter>
-    );
-  }
-}
+              <Route path="*" component={ErrorPage} />
+            </Switch>
+          </Content>
+          <Footer className="layout__footer">2021 © Contacts App</Footer>
+        </Layout>
+      </div>
+    </BrowserRouter>
+  );
+};
 
 export default App;
