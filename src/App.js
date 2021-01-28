@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import logo from "./logo.svg";
 import { Layout, Row, Col, Button } from "antd";
 import { LoginOutlined } from "@ant-design/icons";
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Link, Switch, Redirect } from "react-router-dom";
 import { fetchData } from "./api/api";
 import { SignInModal } from "./components/SignInModal";
 import { openNotification } from "./components/notification";
@@ -14,30 +14,35 @@ import { ErrorPage } from "./pages/Eror404";
 import "./App.css";
 
 const { Header, Content, Footer } = Layout;
-const seedKey = localStorage.getItem("seed_key");
 
 const App = () => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
 
-  console.log("render");
+  const seedKey = localStorage.getItem("seed_key");
 
   useEffect(() => {
-    console.log(seedKey);
-    seedKey &&
-      fetchData({
-        params: {
-          seed: seedKey,
-          results: 1,
-        },
-      })
-        .then((data) => {
-          setUser(data[0]);
-        })
-        .catch(() => {
+    if (seedKey) {
+      const getUser = async () => {
+        try {
+          setIsLoadingUser(true);
+          const response = await fetch(
+            `https://randomuser.me/api/?seed=${seedKey}&results=1`
+          );
+
+          const { results } = await response.json();
+          setUser(results[0]);
+        } catch (e) {
           openNotification("error");
-        });
-  }, []);
+        } finally {
+          setIsLoadingUser(false);
+          setIsShowModal(false);
+        }
+      };
+      getUser();
+    }
+  }, [seedKey]);
 
   return (
     <BrowserRouter>
@@ -47,7 +52,11 @@ const App = () => {
             <Row gutter={30}>
               <Col span={12} align="start">
                 <Link to="/">Home</Link>
-                {user && <Link to="/contacts"> Contacts</Link>}
+                {user && (
+                  <Link to="/contacts" className="p-15">
+                    Contacts
+                  </Link>
+                )}
               </Col>
               <Col span={12} align="end">
                 {user ? (
@@ -70,20 +79,21 @@ const App = () => {
               <Route exact path="/">
                 <img src={logo} className="App-logo" alt="logo" />
               </Route>
-
-              {user && (
-                <>
-                  <Route exact path="/contacts">
-                    <Contacts />
-                  </Route>
-                  <Route path="/contacts/:id">
-                    <ContactProfile />
-                  </Route>
-                  <Route path="/profile">
-                    <UserProfile user={user} />
-                  </Route>
-                </>
-              )}
+              <Route
+                exact
+                path="/contacts"
+                render={() => (user ? <Contacts /> : <ErrorPage />)}
+              />
+              <Route
+                path="/contacts/:id"
+                render={() => (user ? <ContactProfile /> : <ErrorPage />)}
+              />
+              <Route
+                path="/profile"
+                render={() =>
+                  user ? <UserProfile user={user} /> : <ErrorPage />
+                }
+              />
               <Route path="*" component={ErrorPage} />
             </Switch>
           </Content>
